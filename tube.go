@@ -109,7 +109,7 @@ func (t *Tube) RecvLines(numLines uint, keepends bool) ([][]byte, error) {
 // RecvLine reads until a newline is received
 func (t *Tube) RecvLine(keepends bool) ([]byte, error) {
 	data, err := t.fd.ReadBytes(t.Newline)
-	if keepends {
+	if keepends || errors.Is(err, io.EOF) {
 		return data, err
 	}
 	return data[:len(data)-1], err
